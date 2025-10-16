@@ -32,7 +32,8 @@ superAdmin
         -approve/decline
 permission
     *properties
-        -duration
+        -reason
         -requestedBy (student)
-        -status (pending/approved/completed)
+        -status (pending/approved/completed/rejected)
         -approvedBy (admin/superAdmin)
+

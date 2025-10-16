@@ -15,7 +15,7 @@ app.use(cookieParser())
 
 app.use('/api/student', studentRoute)
 app.use('/api/admin', adminRoute)
-app.use('/api/doorRequest', doorRequestRoute)
+app.use('/api/permission', permissionRoute)
 
 connectDB()
 app.listen(PORT, () => {

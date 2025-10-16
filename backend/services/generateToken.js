@@ -5,7 +5,7 @@ dotenv.config()
 
 export function generateAccessToken(userID){
     return jwt.sign(
-        {userId: userId},
+        {userId: userId}, // todo add role when signing the token
         process.env.JWT_SECRET,
         { expiresIn: '15m'}
     )
@@ -13,7 +13,7 @@ export function generateAccessToken(userID){
 
 export function generateRefreshToken(userID){
     return jwt.sign(
-        {userId: userId},
+        {userId: userId}, // todo add role when signing the token
         process.env.JWT_SECRET,
         { expiresIn: '7d'}
     )

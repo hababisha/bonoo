@@ -36,4 +36,18 @@ permission
         -requestedBy (student)
         -status (pending/approved/completed/rejected)
         -approvedBy (admin/superAdmin)
+    *methods
+        -admins approve permissions
+        -students request permissions
+
+
+
+issues
+------
+* add roles
+* when signing the token you should add roles
+    * modify the students auth
+* auth for registering admins
+* auth for registering wards
+
 

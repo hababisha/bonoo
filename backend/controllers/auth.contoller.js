@@ -5,19 +5,26 @@ import  mongoose from "mongoose"
 
 export const registerStudent = async (req, res) =>{
     try {
-       const user = await Students.findOne({userId: req.body.userId})
+       const user = await Students.findOne({userId: req.body.studentId})
+
        if (user){
         return res.status(400).json({message: "student already exists"})
        }
+
        const hashedPass = await hashPassword(req.body.hashPassword)
+
        const newUser = await Students.create({
-        userId: req.body.userId,
-        password: hashedPass
+            studentId: req.body.studentId,
+            department: req.body.department,
+            classYear: req.body.classYear,
+            name: req.body.name,
+            password: hashedPass,
        })
-       const accessToken = generateAccessToken(newUser.userId)
+
+       const accessToken = generateAccessToken(newUser.studentId)
        res.cookie('accessToken', accessToken, {httpOnly: true})
        res.status(201).json({
-        userId: newUser.userId
+        studentId: newUser.studentId
        })
     } catch (error) {
         console.error(error)
@@ -27,7 +34,7 @@ export const registerStudent = async (req, res) =>{
 
 export const loginStudent = async (req, res) => {
     try {
-       const user = await Students.findOne({userId: req.body.userId}) 
+       const user = await Students.findOne({studentId: req.body.studentId}) 
        if (!user){
         return res.status(401).json({message: "Invalid student id or password"})
        }
@@ -37,7 +44,7 @@ export const loginStudent = async (req, res) => {
         return res.status(401).json({message: "Invalid student id or password"})
        }
 
-       const token = generateAccessToken(user.userId)
+       const token = generateAccessToken(user.studentId)
        res.cookie('accessToken', token, {httpOnly: true})
        res.status(200).json({message: "login successful"})
     } catch (error) {
@@ -45,8 +52,26 @@ export const loginStudent = async (req, res) => {
        res.status(500).json({error: error.message})
     }
 }
+export const registerAdmin = async (req, res) => {
 
-export const logoutStudent = async (req,res) => {
+}
+
+export const loginAdmin = async (req,res) => {
+
+}
+
+
+
+export const registerWard = async (req, res) => {
+
+}
+
+export const loginWard = async (req, res) => {
+
+}
+
+
+export const logout = async (req,res) => {
     try {
         res.clearCookie('accessToken').status(200).json({message: "Logout successful"})
     } catch (error) {

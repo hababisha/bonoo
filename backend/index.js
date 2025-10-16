@@ -2,8 +2,9 @@ import express from "express"
 import dotenv from "dotenv"
 import cookieParser from "cookie-parser"
 import { connectDB } from "./utils/db.js"
-import studentRoute from "./routes/student.route.js"
-import adminRoute from "./routes/admin.route.js"
+
+import authRoutes from "./routes/auth.route.js"
+import permissionRoutes from "./routes/permission.route.js"
 
 dotenv.config()
 
@@ -13,9 +14,9 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser())
 
-app.use('/api/student', studentRoute)
-app.use('/api/admin', adminRoute)
-app.use('/api/permission', permissionRoute)
+
+app.use('/api/auth', authRoutes)
+app.use('/api/permission', permissionRoutes)
 
 connectDB()
 app.listen(PORT, () => {

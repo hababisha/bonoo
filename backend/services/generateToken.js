@@ -3,17 +3,17 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-export function generateAccessToken(userID){
+export function generateAccessToken(userID, role){
     return jwt.sign(
-        {userId: userId}, // todo add role when signing the token
+        {userId, role }, 
         process.env.JWT_SECRET,
         { expiresIn: '15m'}
     )
 }
 
-export function generateRefreshToken(userID){
+export function generateRefreshToken(userID, role){
     return jwt.sign(
-        {userId: userId}, // todo add role when signing the token
+        {userId, role},
         process.env.JWT_SECRET,
         { expiresIn: '7d'}
     )

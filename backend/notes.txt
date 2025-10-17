@@ -44,8 +44,8 @@ permission
 
 issues
 ------
-* add roles
-* when signing the token you should add roles
+* add roles - done
+* when signing the token you should add roles - done
     * modify the students auth
 * auth for registering admins
 * auth for registering wards

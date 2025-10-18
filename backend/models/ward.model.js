@@ -1,8 +1,9 @@
 import mongoose from "mongoose"
 
 const wardSchema = new mongoose.Schema({
-    username: {
+    wardId: {
         type: String,
+        unique: true,
         required: true,
     },
     password: {
@@ -13,7 +14,6 @@ const wardSchema = new mongoose.Schema({
         type: String,
         default: "ward",
     }
-
 })
 
 

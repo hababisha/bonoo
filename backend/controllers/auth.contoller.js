@@ -17,14 +17,13 @@ export const registerStudent = async (req, res) =>{
             return res.status(400).json({message: "student already exists"})
         }
 
-        const hashedPass= hashPassword(password)
+        const hashedPass= await hashPassword(password)
 
         const newUser = await Students.create({
             studentId,
             department,
             classYear,
             name,
-            password,
             password: hashedPass,
             role: "student",
         })
@@ -32,7 +31,8 @@ export const registerStudent = async (req, res) =>{
         const accessToken = generateAccessToken(newUser._id, newUser.role) // _id - unique key gen by mongodb
         const refreshToken = generateRefreshToken(newUser._id, newUser.role)
         
-        res.cookie("accessToken", accessToken, {httpOnly: true})
+        res.cookie("accessToken", accessToken, {httpOnly: true, sameSite: true})
+        res.cookie("refreshToken", refreshToken, {httpOnly: true, sameSite: true})
         res.status(201).json({
             message: "student registered successfully",
             studentId: newUser.studentId,
@@ -44,24 +44,42 @@ export const registerStudent = async (req, res) =>{
     }
 }
 
-export const loginStudent = async (req, res) => {
-    try {
-        const { studentId, password } = req.body
 
-        const user = await Students.findOne({ studentId })
+export const registerAdmin = async (req, res) => {
+    
+}
+
+
+
+export const registerWard = async (req, res) => {
+    
+}
+
+
+export const login = async (req, res) => {
+    try {
+        const { userId , password } = req.body
+
+        let user = (await Students.findOne({ studentId: userId })) ||
+                    (await Admins.findOne({ adminId: userId})) ||
+                    (await Wards.findOne({ wardId: userId}))
+
+
         if (!user) {
-            return res.status(401).json({message: "invalid Student Id or password"})
+            return res.status(401).json({ message: "invalid Id or password" })
         }
 
         const isValid= await validatePassword(password, user.password)
         if (!isValid){
-            return res.status(401).json({ message: "invalid Student Id or password"})
+            return res.status(401).json({ message: "invalid Id or password" })
         }
 
         const accessToken = generateAccessToken(user._id, user.role)
         const refreshToken = generateRefreshToken(user._id, user.role)
 
-        res.cookie("accessToken", accessToken, {httpOnly: true})
+        res.cookie("accessToken", accessToken, {httpOnly: true, sameSite: true})
+        res.cookie("refreshToken", refreshToken, {httpOnly: true, sameSite: true})
+
         res.status(200).json({
             message: "Login successful"
         })
@@ -70,25 +88,6 @@ export const loginStudent = async (req, res) => {
        res.status(500).json({error: error.message})
     }
 }
-
-export const registerAdmin = async (req, res) => {
-
-}
-
-export const loginAdmin = async (req,res) => {
-
-}
-
-
-
-export const registerWard = async (req, res) => {
-
-}
-
-export const loginWard = async (req, res) => {
-
-}
-
 
 export const logout = async (req,res) => {
     try {

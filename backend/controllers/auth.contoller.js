@@ -58,7 +58,7 @@ export const registerAdmin = async (req, res) => {
 
         const newUser = await Admins.create({
             adminId, 
-            password,
+            password: hashedPass,
             role: "admin"
         })
 
@@ -69,7 +69,7 @@ export const registerAdmin = async (req, res) => {
         res.cookie("refreshToken", refreshToken, {httpOnly: true, sameSite: true})
         res.status(201).json({
             message: "admin registered successfully",
-            studentId: newUser.studentId,
+            adminId: newUser.adminId,
         })
 
     }catch(error){
@@ -81,7 +81,36 @@ export const registerAdmin = async (req, res) => {
 
 
 export const registerWard = async (req, res) => {
-    
+    try{
+        const { wardId, password} = req.body
+
+        const userExists = await Wards.findOne({ wardId })
+        if (userExists){
+            return res.status(400).json({message: "ward already exists"})
+        }
+
+        const hashedPass = await hashPassword(password)
+
+        const newUser = await Wards.create({
+            wardId, 
+            password: hashedPass,
+            role: "ward"
+        })
+
+        const accessToken = generateAccessToken(newUser._id, newUser.role) // _id - unique key gen by mongodb
+        const refreshToken = generateRefreshToken(newUser._id, newUser.role)
+        
+        res.cookie("accessToken", accessToken, {httpOnly: true, sameSite: true})
+        res.cookie("refreshToken", refreshToken, {httpOnly: true, sameSite: true})
+        res.status(201).json({
+            message: "ward registered successfully",
+            wardId: newUser.wardId,
+        })
+    }catch(error){
+        console.error(error)
+        res.status(500).json({ error: error.message })
+    }
+
 }
 
 

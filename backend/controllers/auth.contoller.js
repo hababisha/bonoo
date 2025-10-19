@@ -60,10 +60,18 @@ export const login = async (req, res) => {
     try {
         const { userId , password } = req.body
 
-        let user = (await Students.findOne({ studentId: userId })) ||
-                    (await Admins.findOne({ adminId: userId})) ||
-                    (await Wards.findOne({ wardId: userId}))
-
+        //this is slow need to refactor it 
+        // let user = (await Students.findOne({ studentId: userId })) ||
+        //             (await Admins.findOne({ adminId: userId})) ||
+        //             (await Wards.findOne({ wardId: userId}))
+        
+        let user = await Admins.findOne({adminId: userId})
+        if (!user){
+            user = await Wards.findOne({ wardId: userId})
+            if (!user){
+                user = await Students.findOne({ studentId: userId})
+            }
+        }
 
         if (!user) {
             return res.status(401).json({ message: "invalid Id or password" })
@@ -92,6 +100,7 @@ export const login = async (req, res) => {
 export const logout = async (req,res) => {
     try {
         res.clearCookie('accessToken').status(200).json({message: "Logout successful"})
+        res.clearCookie('refreshToken')
     } catch (error) {
         console.error(error)
         res.status(500).json({error: error.message})

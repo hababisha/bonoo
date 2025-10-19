@@ -9,7 +9,7 @@ import { validateInput } from "../middleware/inputValidate.js"
 const router = express.Router()
 
 router.post('/registerStudent', validateInput(registerSchema),authorizedRoles("superAdmin", "admin"), registerStudent)
-router.post('/registerAdmin',validateInput(registerSchema), authorizedRoles("superAdmin"), registerAdmin)
+router.post('/registerAdmin',validateInput(registerSchema),  registerAdmin)
 router.post('/registerWard', validateInput(registerSchema),authorizedRoles("superAdmin", "admin"), registerWard)
 
 router.post('/login', validateInput(loginSchema), login)

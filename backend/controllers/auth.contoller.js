@@ -47,7 +47,7 @@ export const registerStudent = async (req, res) =>{
 
 export const registerAdmin = async (req, res) => {
     try{
-        const { adminId, password}  = req.body
+        const { adminId, password }  = req.body
 
         const userExists = await Admins.findOne({ adminId })
         if (userExists){

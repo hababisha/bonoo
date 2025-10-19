@@ -46,7 +46,36 @@ export const registerStudent = async (req, res) =>{
 
 
 export const registerAdmin = async (req, res) => {
-    
+    try{
+        const { adminId, password}  = req.body
+
+        const userExists = await Admins.findOne({ adminId })
+        if (userExists){
+            return res.status(400).json({ message: "admin already exists"})
+        }
+
+        const hashedPass = await hashPassword(password)
+
+        const newUser = await Admins.create({
+            adminId, 
+            password,
+            role: "admin"
+        })
+
+        const accessToken = generateAccessToken(newUser._id, newUser.role) // _id - unique key gen by mongodb
+        const refreshToken = generateRefreshToken(newUser._id, newUser.role)
+        
+        res.cookie("accessToken", accessToken, {httpOnly: true, sameSite: true})
+        res.cookie("refreshToken", refreshToken, {httpOnly: true, sameSite: true})
+        res.status(201).json({
+            message: "admin registered successfully",
+            studentId: newUser.studentId,
+        })
+
+    }catch(error){
+        console.error(error)
+        res.status(500).json({error: error.message})
+    }
 }
 
 

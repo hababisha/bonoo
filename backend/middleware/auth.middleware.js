@@ -1,4 +1,4 @@
-import { verifyAccessToken } from "../services/generateToken";
+import { verifyAccessToken } from "../services/generateToken.js";
 import dotenv from "dotenv"
 
 dotenv.config()
@@ -27,6 +27,7 @@ export function authorizedRoles(...allowedRoles){
     return (req,res,next) =>{
         try {
            const token = req.header("authorization") 
+        //    console.log(token)
            if (!token){
             return res.status(403).json({message: "No token"})
            }

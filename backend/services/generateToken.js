@@ -5,7 +5,7 @@ dotenv.config()
 
 export function generateAccessToken(userID, role){
     return jwt.sign(
-        {userId, role }, 
+        {userID, role }, 
         process.env.JWT_SECRET,
         { expiresIn: '15m'}
     )
@@ -13,7 +13,7 @@ export function generateAccessToken(userID, role){
 
 export function generateRefreshToken(userID, role){
     return jwt.sign(
-        {userId, role},
+        {userID, role},
         process.env.JWT_SECRET,
         { expiresIn: '7d'}
     )

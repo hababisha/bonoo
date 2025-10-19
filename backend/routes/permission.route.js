@@ -2,7 +2,7 @@ import express from "express"
 import { authorizedRoles } from "../middleware/auth.middleware.js"
 import { approvePermission, completePermission, rejectPermission, requestPermission } from "../controllers/permission.controller.js"
 
-const router = express.router()
+const router = express.Router()
 
 router.post('/request', authorizedRoles("students"), requestPermission)
 router.post('/approve', authorizedRoles("admin", "superAdmin"), approvePermission)

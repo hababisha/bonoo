@@ -6,13 +6,13 @@ const permissionSchema = new mongoose.Schema({
     reason : {
             type: String,
         },
-    requestedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Student' },
+    requestedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Students' },
     status : {
         type: String,
-        enum : ["pending", "approved", "rejected", "completed"],
+        enum : ["pending", "approved", "rejected"],
         default: 'pending',
     },
-    approvedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'Admin'},
+    approvedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'Admins'},
 })
 
 

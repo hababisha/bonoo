@@ -44,7 +44,9 @@ export const registerStudent = async (req, res) =>{
     }
 }
 
-
+/**
+ *Register Admin 
+ */
 export const registerAdmin = async (req, res) => {
     try{
         const { adminId, password }  = req.body
@@ -78,7 +80,10 @@ export const registerAdmin = async (req, res) => {
     }
 }
 
-
+/**
+ * 
+ * Register Ward
+ */
 
 export const registerWard = async (req, res) => {
     try{
@@ -112,7 +117,10 @@ export const registerWard = async (req, res) => {
     }
 
 }
-
+/**
+ * 
+ * Login
+ */
 
 export const login = async (req, res) => {
     try {
@@ -155,6 +163,9 @@ export const login = async (req, res) => {
     }
 }
 
+/**
+ * Logout
+ */
 export const logout = async (req,res) => {
     try {
         res.clearCookie('accessToken')
